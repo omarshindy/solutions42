@@ -8,6 +8,7 @@ services:
       - .:/app
     ports:
       - "8000:8000"
+      - "3300:3300"
     env_file:
       - .env
     depends_on:

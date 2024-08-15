@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    {% for block in page.body %}
+        {% if block.block_type == 'vision_section' %}
+            <h2>{{ block.value.title }}</h2>
+            {% if block.value.image %}
+                <img src="{{ block.value.image.url }}" alt="{{ block.value.title }}">
+            {% endif %}
+        {% endif %}
+        {% if block.block_type == 'news_block' %}
+            {{block}}
+            <!-- <ul>
+                {% for news in latest_news %}
+                    <li>
+                        
+                        <a href="{{ news.url }}">
+                            {% if news.image %}
+                                <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                            {% endif %}
+                            {{ news.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul> -->
+        {% endif %}
+
+        {% if block.block_type == 'image_slider' %}
+        <div class="image-slider">
+            {% for image in block.value.images %}
+                <div class="slider-item">
+                    {% image image fill-800x450 as img %}
+                    <img src="{{ img.url }}" alt="{{ image.title }}">
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    {% endfor %}
+{% endblock %}

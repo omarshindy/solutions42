@@ -1,0 +1,16 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<h2>Latest News</h2>
+<ul>
+    {% for news in latest_news %}
+        <li>
+            <a href="{{ news.url }}">
+                {% if news.image %}
+                    {% image news.image fill-300x200 as img %}
+                    <img src="{{ img.url }}" alt="{{ news.title }}">
+                {% endif %}
+                {{ news.title }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

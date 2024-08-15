@@ -39,8 +39,6 @@ coverage.xml
 # Wagtail cache
 wagtailcache/
 
-# Migrations
-**/migrations/*
 
 # Node modules
 node_modules/
