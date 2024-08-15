@@ -1,0 +1,52 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+wagtailenv/
+env/
+venv/
+.wagtailenv/
+
+# Django/Wagtail specific
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.db
+*.sqlite3
+media/
+staticfiles/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Environments
+.env
+*.env
+
+# Wagtail cache
+wagtailcache/
+
+# Migrations
+**/migrations/*
+
+# Node modules
+node_modules/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
