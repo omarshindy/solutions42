@@ -54,8 +54,15 @@ To run the project locally, follow these steps:
    ```bash
    python manage.py migrate
    ```
+6. **Create SuperUser to access admin**
 
-6. **Run the Development Server**
+   Create Admin Super user:
+
+   ```bash
+   python manage.py createsuperuser
+   ```
+   
+7. **Run the Development Server**
 
    Once the migrations are complete, start the development server by running:
 
@@ -103,7 +110,15 @@ To run the project using Docker, follow these steps:
    ```bash
    docker-compose exec web python manage.py migrate
    ```
+   
+6. **Create SuperUser to access admin**
 
+   Create Admin Super user:
+
+   ```bash
+   docker-compose exec web python manage.py createsuperuser
+   ```
+   
 5. **Access the Application**
 
    The application will be accessible at `http://localhost:8000`.
