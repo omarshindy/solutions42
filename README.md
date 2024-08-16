@@ -93,7 +93,15 @@ To run the project using Docker, follow these steps:
    Use Docker Compose to build and start the containers:
 
    ```bash
-   docker compose up -d --build
+   docker-compose up --build
+   ```
+
+4. **Apply Database Migrations**
+
+   Once the containers are up and running, apply the database migrations:
+
+   ```bash
+   docker-compose exec web python manage.py migrate
    ```
 
 5. **Access the Application**
@@ -120,9 +128,48 @@ Make sure to use the Wagtail Localize package to handle translations seamlessly.
 To maintain code quality, run Ruff linting using the following command:
 
 ```bash
-ruff check .
+ruff .
 ```
 
 ### 2. Ruff Configuration
 
 The Ruff configuration is managed through a `.ruff.toml` file located in the root of the project. It includes specific rules tailored to this project. Ensure that the configurations in the `.ruff.toml` file align with the team's coding standards.
+
+## Page Setup and Snippets
+
+### HomePage Sections
+
+The `HomePage` is the main landing page of the site. It contains several sections that can be customized via the Wagtail admin interface. Common sections include:
+
+- **NewsBlock**: Getting Maximun 5 instances from News Created under NewsIndexPage
+- **ImageSliderBlock**: Choose targeted images to appear in HomePage and it's orderable
+- **VisionBlock**: To Add Title and Image for the Vision
+
+Each of these sections can be edited through the Wagtail admin by navigating to the `HomePage` and adding or modifying blocks in the relevant section.
+
+### Creating NewsIndexPage and NewsPage
+
+The `NewsIndexPage` serves as a listing page for all `NewsPage` entries. To create and manage these pages:
+
+1. **Create a NewsIndexPage**
+   - Go to the Wagtail admin and add a new page under the desired parent page.
+   - Choose `NewsIndexPage` from the list of available page types.
+   - Fill out the relevant fields, such as title, intro text, and any other custom fields provided.
+
+2. **Create NewsPage**
+   - Navigate to your `NewsIndexPage` in the admin.
+   - Add a child page and select `NewsPage` from the list of page types.
+   - Fill out the fields such as title, publish date, content, and any other fields provided.
+
+### Adding Header and Footer Snippets
+
+To add header and footer snippets that can be reused across the site:
+
+1. **Create Snippets from NavBar**
+   - In the Wagtail admin, navigate to the "Snippets" section.
+   - Add a new navbar snippet to either header or footer to be selected from nabar type .
+
+2. **Select Pages for Redirection Titles in Header or Footer**
+   - When creating a header or footer snippet, you can choose specific pages that will serve as redirection titles.
+   - In the snippet form, use the page chooser widget to select the pages you want to appear as links in the header or footer.
+   - This allows users to click on the header or footer items and be redirected to the chosen page.
