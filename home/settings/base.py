@@ -30,6 +30,8 @@ environ.Env.read_env()
 INSTALLED_APPS = [
     "home",
     "search",
+    "wagtail_localize",
+    "wagtail_localize.locales",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
@@ -121,13 +124,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
-
 USE_I18N = True
+USE_L10N = True
 
-USE_TZ = True
+WAGTAIL_I18N_ENABLED = True
+LANGUAGES = [
+    ('en', "English"),
+    ('ar', "Arabic"),
+]
+
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
 
 
 # Static files (CSS, JavaScript, Images)

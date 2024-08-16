@@ -1,40 +1,87 @@
-{% load static wagtailcore_tags wagtailuserbar %}
+{% load static i18n wagtailcore_tags wagtailuserbar navbar_tags %}
+
+{% if page %}
+    {% for translation in page.get_translations.live %}
+        {% get_language_info for translation.locale.language_code as lang %}
+        <a href="{% pageurl translation %}" rel="alternate" hreflang="{{ lang.code }}">
+            {{ lang.name_local }}
+        </a>
+    {% endfor %}
+{% endif %}
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
         <title>
             {% block title %}
-            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+                {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
             {% endblock %}
             {% block title_suffix %}
-            {% wagtail_site as current_site %}
-            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+                {% wagtail_site as current_site %}
+                {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
             {% endblock %}
         </title>
+        
         {% if page.search_description %}
         <meta name="description" content="{{ page.search_description }}" />
         {% endif %}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {# Force all links in the live preview panel to be opened in a new tab #}
-        {% if request.in_preview_panel %}
-        <base target="_blank">
-        {% endif %}
-
+        
         {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
         <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/blog.css' %}">
 
         {% block extra_css %}
         {% endblock %}
     </head>
 
-    <body class="{% block body_class %}{% endblock %}">
-        {% block content %}{% endblock %}
+    <body class="{% block body_class %}blog-site{% endblock %}">
+
+        {# Header Navbar #}
+        {% get_navbars as navbars %}
+        {% for navbar in navbars %}
+            {% if navbar.position == 'header' %}
+                <nav class="header-navbar">
+                    <ul>
+                        {% for item in navbar.items %}
+                            {% if item.page %}
+                                <li><a href="{% pageurl item.page %}">{{ item.page.title }}</a></li>
+                            {% else %}
+                                <li>No translation available</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% endfor %}
+
+        <main class="site-content container">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        {# Footer Navbar #}
+        {% for navbar in navbars %}
+            {% if navbar.position == 'footer' %}
+                <nav class="footer-navbar">
+                    <ul>
+                        {% for item in navbar.items %}
+                            {% if item.page %}
+                                <li><a href="{% pageurl item.page %}">{{ item.page.title }}</a></li>
+                            {% else %}
+                                <li>No translation available</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% endfor %}
+
+        {# Global javascript #}
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
         <script type="text/javascript">
@@ -48,8 +95,140 @@
                 });
             });
         </script>
-
-        {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/home.js' %}"></script>
+        <style>
+            body {
+                font-family: 'Arial, sans-serif';
+                line-height: 1.6;
+                color: #333;
+                background-color: #f8f8f8;
+                padding: 0;
+                margin: 0;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .header-navbar ul {
+                list-style: none;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                background-color: #333;
+            }
+
+            .header-navbar ul li {
+                margin: 0 15px;
+            }
+
+            .header-navbar ul li a {
+                color: #fff;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 10px 20px;
+                display: block;
+            }
+
+            .header-navbar ul li a:hover {
+                background-color: #555;
+                transition: background-color 0.3s;
+            }
+
+            .footer-navbar {
+                background-color: #222;
+                color: #fff;
+                padding: 20px 0;
+                text-align: center;
+            }
+
+            .footer-navbar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .footer-navbar ul li {
+                display: inline-block;
+                margin: 0 10px;
+            }
+
+            .footer-navbar ul li a {
+                color: #ddd;
+                text-decoration: none;
+            }
+
+            .footer-navbar ul li a:hover {
+                color: #fff;
+                transition: color 0.3s;
+            }
+
+            .image-slider img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+            }
+
+            .slick-prev, .slick-next {
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                z-index: 1;
+            }
+
+            .slick-dots li button:before {
+                font-size: 12px;
+                color: #333;
+            }
+
+            .slick-dots li.slick-active button:before {
+                color: #000;
+            }
+
+            h2 {
+                text-align: center;
+                margin: 40px 0 20px;
+                color: #333;
+            }
+
+            .content ul {
+                padding: 0;
+                list-style: none;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .content ul li {
+                background-color: #fff;
+                margin: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                width: 300px;
+            }
+
+            .content ul li img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+            }
+
+            .content ul li a {
+                text-decoration: none;
+                color: #333;
+                font-weight: bold;
+                display: block;
+                margin-top: 10px;
+            }
+
+            .content ul li a:hover {
+                color: #007BFF;
+                transition: color 0.3s;
+            }
+        </style>
     </body>
 </html>
